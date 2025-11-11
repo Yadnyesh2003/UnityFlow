@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { el } from "date-fns/locale";
 import api from "../configs/api";
 
-export const fetchWorkspaces = createAsyncThunk('workspace/fetchWorkspaces', async ( getToken) => {
+export const fetchWorkspaces = createAsyncThunk('workspace/fetchWorkspaces', async ({getToken}) => {
     try {
-        const {data} = await api.get('/api/workspaces', {headers: {Authorization: `Bearer ${await getToken()}`}});
+        const token = await getToken();
+        const {data} = await api.get('/api/workspaces', {headers: {Authorization: `Bearer ${token}`}});
         return data.workspaces || [];
     } catch (error) {
         console.log(error?.response?.data?.message || error.message);

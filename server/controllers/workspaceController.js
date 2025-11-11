@@ -1,10 +1,12 @@
 import prisma from '../configs/prisma.js'
+import { getAuth } from "@clerk/express";
 
 
 // Get all workspaces for User
 export const getUserWorkspaces = async (req, res) => {
     try {
-        const userId = await req.auth();
+        // const userId = await req.auth();
+        const { userId } = getAuth(req)
         const workspaces = await prisma.workspace.findMany({
             where: {
                 members: {some: {userId: userId}}
